@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {ActivityIndicator, SafeAreaView} from 'react-native';
-import SearchData from './components/SearchData';
 import MovieList from './components/MovieList';
 
 const App = () => {
@@ -8,7 +7,6 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [search, setSearch] = useState('');
   const [filtered, setFiltered] = useState([]);
 
   const file1 = require('./model/file1');
@@ -45,7 +43,7 @@ const App = () => {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     loadLocalData();
   }, []);
@@ -63,28 +61,19 @@ const App = () => {
   };
   const renderFooter = () => {
     if (!loading) return null;
-    return <ActivityIndicator size="large" />;
+    return <ActivityIndicator size="large"  />;
   };
-
-  const handlesearchinput = text => {
-    setSearch(text);
-    const filterdedata = filtered.filter(function (item) {
-      // console.log("data",item)
-      return item.name.toLowerCase().includes(search.toLowerCase());
-    });
-    setData(filterdedata);
-  };
-
   // console.log('filtereddata', filtered);
   return (
     <SafeAreaView style={{backgroundColor: 'black'}}>
-      <SearchData search={search} handlesearchinput={handlesearchinput} />
       <MovieList
         data={data}
         renderFooter={renderFooter}
         handleRefresh={handleRefresh}
         handleLoadMore={handleLoadMore}
         refreshing={refreshing}
+        setData={setData}
+        filtered={filtered}
       />
     </SafeAreaView>
   );
